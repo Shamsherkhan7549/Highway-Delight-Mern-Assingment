@@ -1,5 +1,6 @@
 const express = require('express')
-const {login, signup,getOtp} = require('../controller/UserController.js')
+const {login, signup} = require('../controller/UserController.js')
+import {getOtp} from '../controller/OtpConteroller.js'
 
 
 
