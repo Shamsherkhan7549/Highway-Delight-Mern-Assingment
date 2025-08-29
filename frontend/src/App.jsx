@@ -1,17 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+
 import Login from './pages/login/Login'
-import Home from './pages/home/Home'
+import Dashboard from './pages/dashboard/Dashboard'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import Navbar from './component/Navbar'
+import { AppContext } from './context/ContextApi.jsx'
+
 
 const App = () => {
+  const context = useContext(AppContext);
   return (
     <>
+
       <BrowserRouter>
+            <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={context.token ? <Dashboard /> : <Login />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </>

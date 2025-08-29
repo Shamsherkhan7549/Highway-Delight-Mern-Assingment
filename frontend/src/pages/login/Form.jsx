@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import axios from 'axios';
-import { set } from 'mongoose';
+import { AppContext } from '../../context/ContextApi';
 
 
 const Form = () => {
@@ -10,6 +10,7 @@ const Form = () => {
   const [serverOtp, setServerOtp] = useState("");
   const [otpField, setOtpField] = useState(false);
   const [register, setRegister] = useState(true);
+  const context = useContext(AppContext);
 
   const [error, setError] = useState("");
 
@@ -44,7 +45,7 @@ const Form = () => {
         const data = response.data;
         console.log(data);
         if (data.success) {
-          console.log("User signed up successfully");
+          context.setToken(data.token);
           setUserInfo({
             name: '',
             dob: '',
@@ -62,7 +63,7 @@ const Form = () => {
         const data = response.data;
         console.log(data);
         if (data.success) {
-          console.log("User logged in successfully");
+          context.setToken(data.token);
           setUserInfo({
             name: '',
             dob: '',
