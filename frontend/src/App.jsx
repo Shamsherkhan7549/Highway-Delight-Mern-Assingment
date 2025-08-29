@@ -17,8 +17,9 @@ const App = () => {
       <BrowserRouter>
           <Navbar />
         <Routes>
-          <Route path="/" element={context.token == null ? <Navigate to="/login" /> : <Navigate to="/dashboard" />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={context.token == null ? <Navigate to="/login" /> : <Dashboard/>} />
+          <Route path="/" element={context.token == null ? <Navigate to="/login" /> : <Dashboard/>} />
+          
           <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>

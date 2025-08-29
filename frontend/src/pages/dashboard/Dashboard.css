@@ -1,5 +1,5 @@
 .card , .note{
-    border: none;
+    border: none !important;
     width: 22rem;
     margin: 0 auto;
 }

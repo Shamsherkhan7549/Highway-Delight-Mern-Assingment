@@ -64,7 +64,6 @@ const Form = () => {
       } else {
         const response = await axios.post(url + "/login", { email: userInfo.email });
         const data = response.data;
-       console.log(data);
         if (data.success) {
           setToken(data.token);
           
@@ -81,8 +80,6 @@ const Form = () => {
 
         } else {
           setError("User login failed");
-
-          console.log();
         }
       }
 

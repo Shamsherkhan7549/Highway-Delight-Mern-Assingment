@@ -6,14 +6,15 @@ export const AppContext = createContext()
 const ContextApi = ({children}) => {
 
     const [token, setToken] = useState(localStorage.getItem('token') || null);
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
 
     useEffect(() => {
       if (token != null) {
         localStorage.setItem('token', token)
-        
+        localStorage.setItem('user', JSON.stringify(user))
       }else{
         localStorage.removeItem('token')
+        localStorage.removeItem('user')
       }
     }, [token])
 
