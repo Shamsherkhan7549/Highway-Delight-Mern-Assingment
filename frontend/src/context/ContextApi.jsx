@@ -1,14 +1,14 @@
-import React, { useEffect,createContext } from 'react'
+import React, { useEffect,createContext, useState } from 'react'
 
 
 export const AppContext = createContext()
 
 const ContextApi = ({children}) => {
 
-    const [token, setToken] = React.useState(null)
+    const [token, setToken] = useState(localStorage.getItem('token') || null);
 
     useEffect(() => {
-      if (token) {
+      if (token != null) {
         localStorage.setItem('token', token)
         
       }else{

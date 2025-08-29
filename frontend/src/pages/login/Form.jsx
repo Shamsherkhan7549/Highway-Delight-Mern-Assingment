@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import axios from 'axios';
 import { AppContext } from '../../context/ContextApi';
+import { useNavigate } from 'react-router-dom';
 
 
 const Form = () => {
@@ -10,6 +11,7 @@ const Form = () => {
   const [serverOtp, setServerOtp] = useState("");
   const [otpField, setOtpField] = useState(false);
   const [register, setRegister] = useState(true);
+  const navigate = useNavigate();
   const context = useContext(AppContext);
 
   const [error, setError] = useState("");
@@ -43,7 +45,7 @@ const Form = () => {
       if (!register) {
         const response = await axios.post(url + "/signup", userInfo);
         const data = response.data;
-        console.log(data);
+
         if (data.success) {
           context.setToken(data.token);
           setUserInfo({
@@ -54,6 +56,8 @@ const Form = () => {
           setUserOtp("");
           setServerOtp("");
           setOtpField(false);
+           navigate('/dashboard')
+         
         } else {
           setError("User signup failed");
           console.log("User signup failed");
@@ -61,9 +65,10 @@ const Form = () => {
       } else {
         const response = await axios.post(url + "/login", { email: userInfo.email });
         const data = response.data;
-        console.log(data);
+       
         if (data.success) {
           context.setToken(data.token);
+          
           setUserInfo({
             name: '',
             dob: '',
@@ -72,6 +77,8 @@ const Form = () => {
           setUserOtp("");
           setServerOtp("");
           setOtpField(false);
+          navigate('/dashboard');
+
         } else {
           setError("User login failed");
 
@@ -80,7 +87,7 @@ const Form = () => {
       }
 
     } catch (error) {
-      setError(error.response.data.message);
+      setError(error.message);
       console.error("Error during form submission:", error);
     }
 
