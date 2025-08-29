@@ -17,11 +17,11 @@ const signup = async (req, res) => {
         if (exist) {
             return res.status(409).json({success:false, message: 'User already exists' })
         }
-        await user.save()
+        const savedUser =  await user.save()
 
-        const token = generateToken(user)
+        const token = generateToken(savedUser)
 
-        res.status(201).json({ success:true, token, message: `Welcome, ${user.name}` })
+        res.status(201).json({ success:true, token, user: savedUser,  message: `Welcome, ${savedUser.name}` })
     } catch (error) {
         res.status(400).json({ success:false, error: error.message })
     }
@@ -38,7 +38,7 @@ const login = async (req, res) => {
             return res.status(401).send('User not registered')
         }
         const token = generateToken(user)
-        res.status(200).json({ success: true, token, message: `Welcome back, ${user.name}` })
+        res.status(200).json({ success: true, token, user, message: `Welcome back, ${user.name}` })
     } catch (error) {
         res.status(500).send(error)
     }

@@ -6,6 +6,7 @@ export const AppContext = createContext()
 const ContextApi = ({children}) => {
 
     const [token, setToken] = useState(localStorage.getItem('token') || null);
+    const [user, setUser] = useState({});
 
     useEffect(() => {
       if (token != null) {
@@ -17,7 +18,7 @@ const ContextApi = ({children}) => {
     }, [token])
 
   return (
-    <AppContext.Provider value={{ token, setToken }}>
+    <AppContext.Provider value={{ token, setToken,user, setUser}}>
         {children}
     </AppContext.Provider>
   )

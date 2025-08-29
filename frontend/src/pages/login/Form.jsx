@@ -12,10 +12,8 @@ const Form = () => {
   const [otpField, setOtpField] = useState(false);
   const [register, setRegister] = useState(true);
   const navigate = useNavigate();
-  const context = useContext(AppContext);
-
+  const {setUser,setToken} = useContext(AppContext);
   const [error, setError] = useState("");
-
 
   const url = import.meta.env.VITE_BACKEND_URL;
 
@@ -45,7 +43,7 @@ const Form = () => {
       if (!register) {
         const response = await axios.post(url + "/signup", userInfo);
         const data = response.data;
-
+        console.log(data.user);
         if (data.success) {
           context.setToken(data.token);
           setUserInfo({
@@ -56,6 +54,7 @@ const Form = () => {
           setUserOtp("");
           setServerOtp("");
           setOtpField(false);
+          setUser(data.user);
            navigate('/dashboard')
          
         } else {
@@ -65,9 +64,9 @@ const Form = () => {
       } else {
         const response = await axios.post(url + "/login", { email: userInfo.email });
         const data = response.data;
-       
+       console.log(data);
         if (data.success) {
-          context.setToken(data.token);
+          setToken(data.token);
           
           setUserInfo({
             name: '',
@@ -77,6 +76,7 @@ const Form = () => {
           setUserOtp("");
           setServerOtp("");
           setOtpField(false);
+          setUser(data.user);
           navigate('/dashboard');
 
         } else {
