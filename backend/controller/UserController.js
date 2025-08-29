@@ -1,6 +1,14 @@
 const TaskModel = require('../model/TasksModel')
 const UserModel = require('../model/UserModel')
+const jwt = require('jsonwebtoken')
+const dotenv =  require('dotenv')
+dotenv.config()
 
+
+// Generate JWT token
+const generateToken = (user) => {
+    return jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '15d' })
+}
 
 const signup = async (req, res) => {
     try {
@@ -10,20 +18,27 @@ const signup = async (req, res) => {
             return res.status(409).json({success:false, message: 'User already exists' })
         }
         await user.save()
-        res.status(201).json({ success:true, user })
+
+        const token = generateToken(user)
+
+        res.status(201).json({ success:true, token, message: `Welcome, ${user.name}` })
     } catch (error) {
         res.status(400).json({ success:false, error: error.message })
     }
 }
 
+
+
+
 const login = async (req, res) => {
     try {
-        const { email, password } = req.body
-        const user = await UserModel.findOne({ email, password })
+        const { email } = req.body
+        const user = await UserModel.findOne({ email })
         if (!user) {
-            return res.status(401).send('Invalid credentials')
+            return res.status(401).send('User not registered')
         }
-        res.status(200).send(user)
+        const token = generateToken(user)
+        res.status(200).json({ success: true, token, message: `Welcome back, ${user.name}` })
     } catch (error) {
         res.status(500).send(error)
     }

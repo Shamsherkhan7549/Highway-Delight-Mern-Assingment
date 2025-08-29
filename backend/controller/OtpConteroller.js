@@ -33,12 +33,11 @@ const getOtp = (req, res) => {
             text: `Your OTP code is ${otp}. It is valid for 5 minutes.`
         };
 
-        console.log(mailOptions)
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 return console.log(error);
             }
-            console.log("OTP sent: " + info.response);
+            // console.log("OTP sent: " + info.response);
             res.status(200).json({ success: true, message: 'OTP sent to email', otp });
         });
 
