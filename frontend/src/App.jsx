@@ -15,7 +15,7 @@ const App = () => {
     <>
 
       <BrowserRouter>
-            <Navbar />
+          <Navbar />
         <Routes>
           <Route path="/" element={context.token == null ? <Navigate to="/login" /> : <Navigate to="/dashboard" />} />
           <Route path="/dashboard" element={<Dashboard />} />
