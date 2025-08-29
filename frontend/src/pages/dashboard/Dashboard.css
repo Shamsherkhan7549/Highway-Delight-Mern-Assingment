@@ -3,3 +3,22 @@
     width: 22rem;
     margin: 0 auto;
 }
+
+.notes{
+    height: 300px !important;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+@media screen and (max-width: 368px) {
+    .card , .note{
+        width: 100%;
+    }
+
+    .notes{
+        height: 450px !important;
+    }
+}
+
