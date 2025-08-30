@@ -33,7 +33,7 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
     try {
         const { email } = req.body
-        const user = await UserModel.findOne({ email })
+        const user = await UserModel.findOne({ email:email })
         if (!user) {
             return res.status(401).json({ success: false, message: 'User not registered' })
         }
