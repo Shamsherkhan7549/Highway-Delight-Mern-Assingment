@@ -12,13 +12,13 @@
   width: 8px;
 }
 
-@media screen and (max-width: 368px) {
+@media screen and (max-width: 414px) {
     .card , .note{
         width: 100%;
     }
 
     .notes{
-        height: 450px !important;
+       height: 480px !important;
     }
 }
 
