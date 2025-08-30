@@ -35,12 +35,12 @@ const login = async (req, res) => {
         const { email } = req.body
         const user = await UserModel.findOne({ email })
         if (!user) {
-            return res.status(401).send('User not registered')
+            return res.status(401).json({ success: false, message: 'User not registered' })
         }
         const token = generateToken(user)
         res.status(200).json({ success: true, token, user, message: `Welcome back, ${user.name}` })
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 

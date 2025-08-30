@@ -12,7 +12,7 @@ const Form = () => {
   const [otpField, setOtpField] = useState(false);
   const [register, setRegister] = useState(true);
   const navigate = useNavigate();
-  const {setUser,setToken, message,setMessage} = useContext(AppContext);
+  const { setUser, setToken, message, setMessage } = useContext(AppContext);
 
   const url = import.meta.env.VITE_BACKEND_URL;
 
@@ -53,8 +53,8 @@ const Form = () => {
           setServerOtp("");
           setOtpField(false);
           setUser(data.user);
-           navigate('/dashboard')
-         
+          navigate('/dashboard')
+
         } else {
           setMessage("User already exists");
         }
@@ -63,7 +63,7 @@ const Form = () => {
         const data = response.data;
         if (data.success) {
           setToken(data.token);
-          
+
           setUserInfo({
             name: '',
             dob: '',
@@ -81,10 +81,8 @@ const Form = () => {
       }
 
     } catch (error) {
-      if(error.response.status===409)
-          setMessage("User already exists");
-      else if(error.response.status===401)
-          setMessage("User not Registered");
+      setMessage(error.response.data.message);
+
     }
 
   }
