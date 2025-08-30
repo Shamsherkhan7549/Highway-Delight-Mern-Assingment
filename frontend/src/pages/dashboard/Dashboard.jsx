@@ -12,9 +12,8 @@ const Dashboard = () => {
   const [notes, setNotes] = useState([]);
   const [noteField, setNoteField] = useState(false)
   const url = import.meta.env.VITE_BACKEND_URL
-  const { token } = useContext(AppContext)
-  const [noteSaveErr, setNoteSaveErr] = useState("")
-  const [deleteMessage, setDeleteMessage] = useState("")
+  const { token,message,setMessage } = useContext(AppContext)
+  
 
   const handlingNoteChange = (event) => {
     setNote(event.target.value)
@@ -27,19 +26,23 @@ const Dashboard = () => {
     if (noteField)
       try {
 
-        const response = await axios.post(`${url}/task`, { note: note }, { headers: { Authorization: `Bearer ${token}` } })
-        const data = response.data
+        if(note==="")
+          return setMessage("Note cannot be empty")
+
+        const response =  await axios.post(`${url}/task`, { note: note }, { headers: { Authorization: `Bearer ${token}` } })
+        const data =  response.data
 
         if (data.success) {
+          setMessage(data.message)
           setNote("")
         } else {
-          setNoteSaveErr(data.message)
+          setMessage(data.message)
           setNoteField(false)
 
         }
 
       } catch (error) {
-        setNoteSaveErr(error.message)
+        setMessage(error.response.data.message);
         setNoteField(false)
 
       }
@@ -53,20 +56,12 @@ const Dashboard = () => {
 
       if (data.success) {
         setNotes(notes.filter(note => note._id !== id));
-        setDeleteMessage(data.message);
+        setMessage(data.message);
       }
     } catch (error) {
-      console.error(error);
+      setMessage(error.response.data.message);
     }
   }
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDeleteMessage("");
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [deleteMessage]);
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -106,19 +101,17 @@ const Dashboard = () => {
             <div className='text-center'>
               <form >
                 {
-                  noteField &&
+                  noteField && 
                   <>
                     <TextField className='note' id="note" value={note} type='text' label="Note" variant="outlined" onChange={handlingNoteChange} /> <br /> <br />
                   </>
                 }
                 {
-                  noteSaveErr && <p className='text-danger'>{noteSaveErr}</p>
+                  message && <p className='text-success fw-semibold'>{message}</p>
                 }
                 <Button variant="contained" onClick={handlingCreateNote} className='note' size="large" type='submit' >Create Note</Button>
               </form>
-              {
-                deleteMessage && <p className='text-success pt-3 fw-semibold'>{deleteMessage}</p>
-              }
+             
               <div className="card notes overflow-auto scrollbar mt-4 text-start ">
                 <div className="card-body sticky-top bg-light shadow  lh-base d-flex justify-content-between align-items-center" key={note._id}>
                   <h4 className='text-start '>Notes</h4>

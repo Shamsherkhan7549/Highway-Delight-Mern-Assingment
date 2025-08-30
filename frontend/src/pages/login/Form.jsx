@@ -12,8 +12,7 @@ const Form = () => {
   const [otpField, setOtpField] = useState(false);
   const [register, setRegister] = useState(true);
   const navigate = useNavigate();
-  const {setUser,setToken} = useContext(AppContext);
-  const [error, setError] = useState("");
+  const {setUser,setToken, message,setMessage} = useContext(AppContext);
 
   const url = import.meta.env.VITE_BACKEND_URL;
 
@@ -43,7 +42,6 @@ const Form = () => {
       if (!register) {
         const response = await axios.post(url + "/signup", userInfo);
         const data = response.data;
-        console.log(data.user);
         if (data.success) {
           context.setToken(data.token);
           setUserInfo({
@@ -58,8 +56,7 @@ const Form = () => {
            navigate('/dashboard')
          
         } else {
-          setError("User signup failed");
-          console.log("User signup failed");
+          setMessage("User already exists");
         }
       } else {
         const response = await axios.post(url + "/login", { email: userInfo.email });
@@ -79,13 +76,15 @@ const Form = () => {
           navigate('/dashboard');
 
         } else {
-          setError("User login failed");
+          setMessage("User not registered");
         }
       }
 
     } catch (error) {
-      setError(error.message);
-      console.error("Error during form submission:", error);
+      if(error.response.status===409)
+          setMessage("User already exists");
+      else if(error.response.status===401)
+          setMessage("User not Registered");
     }
 
   }
@@ -122,7 +121,7 @@ const Form = () => {
 
 
   return (
-    <div className=' my-5 py-5 px-5  px-md-3'>
+    <div className=' my-5  px-5  px-md-3'>
       <form className='' onSubmit={handlingSubmit}>
         <h3>{register ? "Sign In" : "Sign Up"} </h3>
         <p className='text-muted'>Sign up to enjoy the feature of HD</p>
@@ -140,7 +139,7 @@ const Form = () => {
               <TextField className='w-100' id="otp" type='password' label="OTP" variant="outlined" value={userOtp} onChange={handlingOtpChange} /> <br /> <br />
               <p className='text-primary pointer' onClick={handlingOtp}><u>Resend OTP</u></p>
 
-              {error && <p className='text-danger'>{error}</p>}
+              {message && <p className='text-danger fw-semibold'>{message}</p>}
               <Button variant="contained" className='w-100' size="large" type='submit' > {register ? "Sign In" : "Sign Up"}</Button>
             </>
             :
