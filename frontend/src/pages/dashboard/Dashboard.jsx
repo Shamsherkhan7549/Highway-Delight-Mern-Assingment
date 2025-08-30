@@ -113,7 +113,7 @@ const Dashboard = () => {
               </form>
              
               <div className="card notes overflow-auto scrollbar mt-4 text-start ">
-                <div className="px-3 py-2 sticky-top bg-light shadow  lh-base" key={note._id}>
+                <div className="px-3 py-4 sticky-top bg-light shadow  lh-base" key={note._id}>
                   <h4 className='text-start '>Notes</h4>
 
                 </div>
@@ -121,7 +121,7 @@ const Dashboard = () => {
                 {
 
                   notes.map(note => (
-                    <div className=" px-3 py-2 shadow my-2  lh-base d-flex justify-content-between align-items-center" key={note._id}>
+                    <div className=" px-3 py-4 shadow my-2  lh-base d-flex justify-content-between align-items-center" key={note._id}>
                       <p className="card-title"> {note.task}</p>
                       <i key={note._id} onClick={() => handlingDeleteNote(note._id)} className="fa-regular fa-trash-can" style={{ color: "#000000", cursor: "pointer" }}></i>
                     </div>
