@@ -35,7 +35,7 @@ const Form = () => {
     try {
 
       if (userOtp != serverOtp) {
-        setError("Invalid OTP");
+        setMessage("Invalid OTP");
         return;
       }
 
@@ -43,7 +43,7 @@ const Form = () => {
         const response = await axios.post(url + "/signup", userInfo);
         const data = response.data;
         if (data.success) {
-          context.setToken(data.token);
+          setToken(data.token);
           setUserInfo({
             name: '',
             dob: '',
@@ -109,11 +109,10 @@ const Form = () => {
       if (data.success) {
         setOtpField(true);
         setServerOtp(data.otp);
-        console.log("OTP sent successfully");
       }
 
     } catch (error) {
-      console.log("Error sending OTP:", error);
+      setMessage(error.response.data.message);
     }
   }
 
